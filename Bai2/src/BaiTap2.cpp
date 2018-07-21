@@ -19,24 +19,27 @@ void readFile()
     fstream writeFile;
     string str;
     char fileName[20];
-    while(true)
+//    while(true)
+//    {
+    do
     {
-        do
+        cout<<endl<< "Enter file: ";
+        cin>>fileName;
+        if(!checkFile(file, fileName))
         {
-            cout<<endl<< "Enter file: ";
-            cin>> fileName;
-            if(!checkFile(file, fileName))
-            {
-                cout<<endl<<endl<< "Invalid file !!!"<< endl;
-            }
+            cout<<endl<<endl<< "Invalid file !!!"<< endl;
         }
-        while(!file);
-        writeFile.open("output.txt", fstream::out|fstream::app);
-        writeFile<<"Input file: "<<fileName<<endl;
-        writeFile.close();
-        file.close();
-        select(file,fileName);
     }
+    while(!file);
+
+    writeFile.open("output.txt", fstream::out|fstream::app);
+    writeFile<<"Input file: "<<fileName<<endl;
+
+    writeFile.close();
+    file.close();
+
+    select(file,fileName);
+//    }
 }
 
 bool checkFile(fstream &file,char *fileName)
@@ -84,9 +87,9 @@ void select(fstream &file, char *fileName)
         case 3:
             system("cls");
             cout<< "Exit !!!"<<endl;
-            cout<<endl<< "Press any key to return input file..."<<endl;
-            getch();
-            system("cls");
+//            cout<<endl<< "Press any key to return input file..."<<endl;
+//            getch();
+//            system("cls");
             break;
         default:
             system("cls");

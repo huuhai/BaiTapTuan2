@@ -31,3 +31,11 @@ Context 2: replace by new keyword
 
 	Ln 8, Col 50
 Total appeared time 6
+Context 3: search keyword
+	Keyword: will
+
+	Ln 1, Col 8
+
+	Ln 4, Col 56
+Total position(s): 2
+
