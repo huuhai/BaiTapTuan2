@@ -7,10 +7,11 @@
 using namespace std;
 
 void readFile();
+void menu();
 bool checkFile(fstream &file, char *fileName);
 void select(fstream &file, char *fileName);
-void Search(fstream &file, char *fileName);
-void Replace(fstream &file, char *fileName);
+void Search(fstream &file, char *fileName, int *print);
+void Replace(fstream &file, char *fileName, int *print);
 
 void readFile()
 {
@@ -22,24 +23,15 @@ void readFile()
     {
         do
         {
-            cout<<endl<< "Nhap vao ten file: ";
+            cout<<endl<< "Enter file: ";
             cin>> fileName;
             if(!checkFile(file, fileName))
             {
-                cout<<endl<<endl<< "File khong ton tai !!!"<< endl;
-            }
-            else
-            {
-                while(getline(file, str))
-                {
-                    cout<< str;
-                }
-                cout<<endl<<endl<< "File ton tai !!!"<< endl;
-                break;
+                cout<<endl<<endl<< "Invalid file !!!"<< endl;
             }
         }
         while(!file);
-        writeFile.open("output.txt", fstream::out|fstream::in|fstream::app);
+        writeFile.open("output.txt", fstream::out|fstream::app);
         writeFile<<"Input file: "<<fileName<<endl;
         writeFile.close();
         file.close();
@@ -63,30 +55,36 @@ bool checkFile(fstream &file,char *fileName)
 
 void select(fstream &file, char *fileName)
 {
-    int choice;
-    while(true)
+    int choice=0;
+    int print=0;
+    do
     {
-        cout<< "\n\n\t\tChon chuc nang:"<<endl;
-        cout<< "\t\t\t"<<"1. Search"<<endl;
-        cout<< "\t\t\t"<<"2. Replace"<<endl;
-        cout<< "\t\t\t"<<"3. Exit"<<endl;
-
+        if(print==0)
+        {
+            cout<< "Valid file, please choose file features: "<<endl;
+        }
+        else
+        {
+            cout<<endl<<endl<< "Choose the features: "<<endl;
+        }
+        print++;
+        menu();
         cin>>choice;
 
         switch(choice)
         {
         case 1:
             system("cls");
-            Search(file,fileName);
+            Search(file,fileName, &print);
             break;
         case 2:
             system("cls");
-            Replace(file, fileName);
+            Replace(file, fileName, &print);
             break;
         case 3:
             system("cls");
-            cout<< "Da thoat !!!"<<endl;
-            cout<<endl<< "An mot phim bat ky de quay lai nhap FILE"<<endl;
+            cout<< "Exit !!!"<<endl;
+            cout<<endl<< "Press any key to return input file..."<<endl;
             getch();
             system("cls");
             break;
@@ -96,13 +94,22 @@ void select(fstream &file, char *fileName)
             break;
         }
         if(choice==3)
-        {
             break;
-        }
     }
+    while(true);
 }
 
-void Search(fstream &file, char *fileName)
+void menu()
+{
+    cout<< "\t------------------------------"<<endl;
+    cout<< "\t\t"<<"1. Search"<<endl;
+    cout<< "\t\t"<<"2. Replace"<<endl;
+    cout<< "\t\t"<<"3. Exit"<<endl;
+    cout<< "\t------------------------------"<<endl;
+
+}
+
+void Search(fstream &file, char *fileName, int *print)
 {
     string keyWord;
     fstream writeFile;
@@ -110,15 +117,18 @@ void Search(fstream &file, char *fileName)
     int toTal=0;
     int line=0;
     size_t position;
+    writeFile.open("output.txt", fstream::out|fstream::app);
 
-    cout<< "Nhap vao tu khoa: ";
+    cout<< "Enter keyword: ";
     cin>>keyWord;
     file.open(fileName,fstream::in);
+
+    writeFile<<"Context "<<*print<<": search keyword"<<endl<<"\t"<<"Keyword: "<<keyWord<<endl;
 
     while (getline(file, str))
     {
         line++;
-        position = str.find(keyWord, 0);
+        position = str.find(keyWord);
         while (position != string::npos)
         {
             string next = str.substr(position + keyWord.length(), 1),
@@ -133,19 +143,18 @@ void Search(fstream &file, char *fileName)
             {
                 cout << "\n\tLn " << line << ", Col " << position + 1;
                 toTal++;
+                writeFile<<"\n\tLn " << line << ", Col " << position + 1<<endl;
             }
             position = str.find(keyWord, ++position);
         }
     }
-    cout<<endl<< "Total "<< toTal;
+    cout<<endl<< "Total appeared time: "<<toTal<<endl;
     file.close();
-    writeFile.open("output.txt", fstream::out|fstream::app);
-    writeFile<<"Context 1: search keyword"<<endl<<"\t\t"<<"Keyword: "<<keyWord<<endl
-             <<"Total position(s): "<<toTal<<endl<<"\t\tLn " << line << ", Col " << position + 1<<endl;
+
+    writeFile<<"Total position(s): "<<toTal<<endl<<endl;
 }
 
-
-void Replace(fstream &file, char *fileName)
+void Replace(fstream &file, char *fileName, int *print)
 {
     string Replace;
     string str;
@@ -153,11 +162,19 @@ void Replace(fstream &file, char *fileName)
     int line=0;
     int toTal=0;
     size_t position;
-    cout<< "Nhap vao tu khoa: ";
+
+    fstream WriteFile;
+    WriteFile.open("output.txt", fstream::out|fstream::app);
+
+    cout<< "Enter word(s): ";
     cin>>keyWord;
-    cout<< "Nhap vao tu thay the: ";
+    cout<< "Enter new word(s): ";
     cin>>Replace;
+
     file.open(fileName, fstream::in);
+
+    WriteFile<< "Context "<<*print<<": replace by new keyword"<<endl<<"\tKeyword: "<<keyWord<<endl<<"\tNew keyword: "<<Replace<<endl;
+
     while (getline(file, str))
     {
         line++;
@@ -176,14 +193,15 @@ void Replace(fstream &file, char *fileName)
             {
                 cout << "\n\tLn " << line << ", Col " << position + 1;
                 toTal++;
+                WriteFile<<"\n\tLn " << line << ", Col " << position + 1<<endl;
             }
             position = str.find(keyWord, ++position);
         }
     }
-    cout<<endl<< "Total "<< toTal;
-    while (!file.eof())
+    cout<<endl<< "Total appeared time "<<toTal<<endl;
+    WriteFile<<"Total appeared time "<<toTal<<endl;
+    while (getline(file, str))
     {
-        getline(file, str);
         while ((position = str.find(keyWord, position)) != string::npos)
         {
             str.replace(position, keyWord.length(), Replace);

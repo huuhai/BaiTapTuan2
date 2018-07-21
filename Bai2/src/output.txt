@@ -1,0 +1,33 @@
+Input file: input.txt
+Context 1: search keyword
+	Keyword: we
+
+	Ln 1, Col 5
+
+	Ln 2, Col 23
+
+	Ln 2, Col 92
+
+	Ln 4, Col 11
+
+	Ln 7, Col 22
+
+	Ln 8, Col 50
+Total position(s): 6
+
+Context 2: replace by new keyword
+	Keyword: we
+	New keyword: me
+
+	Ln 1, Col 5
+
+	Ln 2, Col 23
+
+	Ln 2, Col 92
+
+	Ln 4, Col 11
+
+	Ln 7, Col 22
+
+	Ln 8, Col 50
+Total appeared time 6
