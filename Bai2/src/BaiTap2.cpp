@@ -90,7 +90,7 @@ void select(fstream &file, char *fileName)
             break;
         default:
             system("cls");
-            cout<< "Khong co chuc nang nay !!!"<<endl;
+            cout<< "choose fail !!!"<<endl;
             break;
         }
         if(choice==3)
@@ -106,7 +106,6 @@ void menu()
     cout<< "\t\t"<<"2. Replace"<<endl;
     cout<< "\t\t"<<"3. Exit"<<endl;
     cout<< "\t------------------------------"<<endl;
-
 }
 
 void Search(fstream &file, char *fileName, int *print)
@@ -152,6 +151,7 @@ void Search(fstream &file, char *fileName, int *print)
     file.close();
 
     writeFile<<"Total position(s): "<<toTal<<endl<<endl;
+    writeFile.close();
 }
 
 void Replace(fstream &file, char *fileName, int *print)
@@ -209,8 +209,10 @@ void Replace(fstream &file, char *fileName, int *print)
         }
         cout<<str;
     }
+    file<<str;
     cout<<endl<<"Replace "<<keyWord<<" by "<<Replace<<" Successfully"<<endl;
     file.close();
+    WriteFile.close();
 }
 
 main()
